@@ -1,3 +1,4 @@
+'use client'
 import Feed from '@/components/Feed'
 import LeftMenu from '@/components/LeftMenu'
 import RightMenu from '@/components/RightMenu'

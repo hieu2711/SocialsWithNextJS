@@ -1,30 +1,58 @@
-"use client"
-import React from 'react'
-import ListPost from './ListPost'
-import {User, Comment, Post} from '../config/interface'
-type Props = {
-  post: Post[]
-  commentList: Comment[],
-  avt: string,
-  userId: number,
-}
+import React, { useState } from 'react';
+import ListPost from './ListPost';
+import { useGlobalContext } from '../app/globalContext';
+import { Comment, Post } from '../config/interface';
 
-const Feed = ({userId, commentList,post, avt}: Props) => {
-  if (!Array.isArray(post)) {
-    return <div>No posts available</div>;
-  }
+const Feed = () => {
+    const { post, comment,setPost, avatar, id, name } = useGlobalContext();
+    if (!Array.isArray(post)) {
+        return <div>No posts available</div>;
+    }
 
-  return (
-    <div className=" flex flex-col gap-5">
-      {
-        post.map((postItem, index) => (
-          <ListPost  commentList={commentList.filter(comment => comment.postId === postItem.id)}  postId={postItem.id} userId={userId}
-          key={index} name={postItem.User.name} avt={postItem.User.avatar} image={postItem.img} desc={postItem.desc} avatarUser={avt} 
- />
-        ))
-      }
-  </div>
-  )
-}
+    const handleHidePost = (postId: number) => {
+        setPost((prevPosts) => prevPosts.filter((postItem) => postItem.id !== postId));
+    };
 
-export default Feed
+    const getMediaType = (url) => {
+        if(url)
+        {
+        const extension = url.split('.').pop().toLowerCase();
+        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+        const videoExtensions = ['mp4', 'webm', 'ogg'];
+        
+        if (imageExtensions.includes(extension)) {
+            return 'image';
+        }
+        
+        if (videoExtensions.includes(extension)) {
+            return 'video';
+        }
+        
+        return 'image';
+        }
+    };
+    return (
+        <div className="flex flex-col gap-5">
+            {
+                post.map((postItem) => (
+                    <ListPost
+                        key={postItem.id}
+                        commentList={comment.filter(comment => comment.postId === postItem.id)}
+                        postId={postItem.id}
+                        name={postItem.User.name}
+                        avt={postItem.User.avatar}
+                        image={postItem.img}
+                        desc={postItem.desc}
+                        avatarUser={avatar || ''}
+                        userId={id || 0}
+                        idUserPost={postItem.userId}
+                        onHidePost={handleHidePost}
+                        mediaType={getMediaType(postItem.img)}
+                    />
+                ))
+            }
+        </div>
+    );
+};
+
+export default Feed;

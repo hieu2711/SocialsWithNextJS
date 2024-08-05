@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ClerkProvider } from "@clerk/nextjs";
 const inter = Inter({ subsets: ["latin"] });
+import { GlobalProvider } from './globalContext';
 
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    <GlobalProvider>
     <ClerkProvider>
     <html lang="en">
       <body className={inter.className}>
@@ -30,5 +32,6 @@ export default function RootLayout({
         </body>
     </html>
     </ClerkProvider>
+    </GlobalProvider>
   );
 }

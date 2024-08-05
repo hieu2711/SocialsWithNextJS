@@ -51,7 +51,7 @@ const StoryZoom = ({ username, image, open, handleClose }: Props) => {
                     {username}
                 </Typography>
                 <Typography id="simple-modal-description" sx={{ mt: 2 }} className='w-full mx-auto flex flex-col items-center'>
-                    <Image src={image} alt="Story Image" width={400} height={300} className='w-80% h-80%' />
+                    <Image src={image} alt="Story Image" width={400} height={300} className='w-[800px] h-[550px]' />
                     <div className='relative w-full mt-2'>
                         <div 
                             ref={progressBarRef}

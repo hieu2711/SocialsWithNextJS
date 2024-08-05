@@ -5,6 +5,7 @@ import MobileMenu from './MobileMenu'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import {jwtDecode} from "jwt-decode";
+import { useGlobalContext } from '@/app/globalContext'
 
 type Props = {}
 
@@ -12,6 +13,8 @@ const Navbar = (props: Props) => {
     const router = useRouter();
     const [avt, setAvt] = useState<string>('');
     const [name, setName] = useState<string>('');
+    const { id } = useGlobalContext();
+
     useEffect(() => {
         const name = localStorage.getItem('name');
         setName(name || '')
@@ -27,7 +30,6 @@ const Navbar = (props: Props) => {
         setName('');
         router.push('/sign-in');
     };
-
     return (
         <div className='flex items-center justify-between h-24'>
             <div className='md:hidden lg:block w-[20%]'>
@@ -58,7 +60,7 @@ const Navbar = (props: Props) => {
             <div className='w-[30%] flex items-center gap-4 xl:gap-4 justify-end'>
                 {name !== '' &&
                     <div className='hidden sm:flex items-center gap-4'>
-                        <Link href={'/profile/123'} className='cursor-pointer flex items-center'>
+                        <Link href={`/profile/${id}`} className='cursor-pointer flex items-center'>
                         <Image src={avt} 
                         alt='avt' width={32} height={32} className='rounded-full w-8 h-8 mr-2'/>
                         <p className='font-semibold'>{name}</p>

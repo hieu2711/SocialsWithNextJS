@@ -9,6 +9,15 @@ const Shared = sequelize.define('Shared', {
     autoIncrement: true,
     primaryKey: true,
   },
+  descShared: {
+    type: DataTypes.TEXT
+  },
+  description: {
+    type: DataTypes.TEXT,
+  },
+  image: {
+    type: DataTypes.STRING,
+  },
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,

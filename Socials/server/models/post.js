@@ -23,6 +23,9 @@ const Post = sequelize.define('Post', {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
   },
+  contentShared: {
+    type: DataTypes.TEXT
+  },
 });
 
 Post.belongsTo(User, { foreignKey: 'userId', onDelete: 'CASCADE' });

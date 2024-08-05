@@ -16,7 +16,7 @@ router.get('/count/:postId', async (req, res) => {
 
 // Create a new share
 router.post('/create', async (req, res) => {
-    const { userId, postId } = req.body;
+    const { userId, postId, image, description, descShared} = req.body;
   
     try {
       // Kiểm tra sự tồn tại của userId và postId
@@ -36,7 +36,7 @@ router.post('/create', async (req, res) => {
       }
   
       // Tạo lượt share mới
-      const newShare = await Shared.create({ userId, postId });
+      const newShare = await Shared.create({ userId, postId , image, description, descShared});
       res.status(201).json({ success: true, share: newShare });
     } catch (error) {
       console.error('Error creating share:', error);

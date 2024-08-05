@@ -1,46 +1,40 @@
+// components/Stories.tsx
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { CldUploadWidget } from 'next-cloudinary';
 import axios from 'axios';
 import { endpoints } from '@/config/api';
 import StoryZoom from './StoryZoom';
-import {User, Story} from '../config/interface'
+import { useGlobalContext } from '../app/globalContext';
 
-type Props = {
-  story: Story[];
-  avatar: string;
-  userId: number;
-  name: string;
-  onStoryUpload: () => void;
-}
-
-const Stories = ({ userId, avatar, name, story, onStoryUpload }: Props) => {
-  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+const Stories = () => {
+  const { story = [], avatar, id, name, fetchApiStory } = useGlobalContext();
+  const [selectedStory, setSelectedStory] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const uploadWidgetRef = useRef<any>(null);
+  const uploadWidgetRef = useRef(null);
 
-  const handleUploadStory = async (result: any) => {
+  const handleUploadStory = async (result) => {
     console.log('Upload result:', result.info.secure_url);
     try {
       await axios.post(endpoints.createStory, {
         img: result.info.secure_url,
-        userId: userId
+        userId: id,
       });
-      onStoryUpload();
+      fetchApiStory();
     } catch (error) {
       console.error('Error uploading story:', error);
     }
-  }
+  };
 
-  const handleStoryClick = (storyItem: Story) => {
+  const handleStoryClick = (storyItem) => {
     setSelectedStory(storyItem);
     setModalOpen(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setModalOpen(false);
     setSelectedStory(null);
-  }
+  };
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md overflow-x-auto text-xs">
@@ -61,7 +55,7 @@ const Stories = ({ userId, avatar, name, story, onStoryUpload }: Props) => {
             </div>
           </div>
         </div>
-        {story.map((storyItem) => (
+        {story && story.map((storyItem) => (
           <div key={storyItem.id} className='relative flex flex-col items-center gap-2 cursor-pointer' onClick={() => handleStoryClick(storyItem)}>
             <Image
               src={storyItem.img}
@@ -96,6 +90,6 @@ const Stories = ({ userId, avatar, name, story, onStoryUpload }: Props) => {
       )}
     </div>
   );
-}
+};
 
 export default Stories;
