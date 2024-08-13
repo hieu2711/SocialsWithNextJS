@@ -8,16 +8,18 @@ import UserMediaCard from './UserMediaCard'
 
 type Props = {
   userId:string,
-  type: "home" | "profile"
+  type: "home" | "profile",
+  infoUser: object
+  listImage: object
 }
 
-const RightMenu = ({userId, type}: Props) => {
+const RightMenu = ({userId, type, infoUser, listImage}: Props) => {
   return(
   <div className='flex flex-col gap-6'>
     {userId && type === "profile" ? (
       <>
-        <UserInfoCard userId={userId}/>
-        <UserMediaCard userId={userId} />
+        <UserInfoCard infoUser={infoUser} userId={userId}/>
+        <UserMediaCard listImage={listImage} userId={userId} />
       </>
     ): null}
         <FriendRequest />

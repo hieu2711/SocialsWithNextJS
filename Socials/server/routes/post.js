@@ -352,6 +352,44 @@ router.get('/allPosts', async (req, res) => {
       res.status(500).json({ message: 'Error fetching posts and shares' });
     }
   });
-  
-  
+
+
+
+// API để lấy tất cả các bài post và shared dựa vào userId
+router.get('/posts-and-user/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Lấy thông tin người dùng
+        const user = await User.findByPk(userId, {
+            attributes: ['id', 'phone', 'avatar', 'name', 'description', 'city', 'school', 'work', 'website', 'createdAt', 'updatedAt']
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Lấy tất cả các bài post của người dùng
+        const posts = await Post.findAll({
+            where: { userId },
+            order: [['createdAt', 'DESC']],
+            raw: true,
+        });
+
+        // Kết hợp thông tin người dùng vào từng bài post
+        const postsWithUser = posts.map(post => ({
+            ...post,
+            contentShared: null, // Bạn có thể thay đổi nếu cần
+            User: user
+        }));
+
+        // Trả về thông tin người dùng cùng với danh sách bài viết
+        res.json(postsWithUser);
+    } catch (error) {
+        console.error('Error fetching posts and user:', error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 module.exports = router;

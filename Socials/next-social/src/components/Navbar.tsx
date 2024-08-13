@@ -14,6 +14,7 @@ const Navbar = (props: Props) => {
     const [avt, setAvt] = useState<string>('');
     const [name, setName] = useState<string>('');
     const { id } = useGlobalContext();
+    const [searchInput, setSearchInput] = useState<string>('');
 
     useEffect(() => {
         const name = localStorage.getItem('name');
@@ -30,6 +31,12 @@ const Navbar = (props: Props) => {
         setName('');
         router.push('/sign-in');
     };
+
+    const handleSearch = () => {
+        router.push(`/search?name=${searchInput}`);
+    };
+
+
     return (
         <div className='flex items-center justify-between h-24'>
             <div className='md:hidden lg:block w-[20%]'>
@@ -43,18 +50,15 @@ const Navbar = (props: Props) => {
                         <Image src="/home.png" alt="homepage" width={16} height={16} className='w-4 h-4'/>
                         <span>Homepage</span>
                     </Link>
-                    <Link href={"/"} className='flex gap-2 items-center'>
+                    <Link href={`friend/${id}`} className='flex gap-2 items-center'>
                         <Image src="/friends.png" alt="friends" width={16} height={16} className='w-4 h-4'/>
                         <span>Friends</span>
                     </Link>
-                    <Link href={"/"} className='flex gap-2 items-center'>
-                        <Image src="/stories.png" alt="stories" width={16} height={16} className='w-4 h-4'/>
-                        <span>Stories</span>
-                    </Link>
                 </div>
                 <div className='hidden xl:flex p-2 bg-slate-100 items-center rounded-lg'>
-                    <input type='text' placeholder='search...' className='bg-transparent outline-none' />
-                    <Image src={"/search.png"} alt='search' width={14} height={14} />
+                    <input type='text' placeholder='search...' className='bg-transparent outline-none'   value={searchInput}  
+                     onChange={(e) => setSearchInput(e.target.value)} />
+                    <Image src={"/search.png"} alt='search' width={14} height={14} onClick={handleSearch} />
                 </div>
             </div>
             <div className='w-[30%] flex items-center gap-4 xl:gap-4 justify-end'>

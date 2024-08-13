@@ -1,6 +1,7 @@
 const express = require('express');
 // const { FollowRequest, User } = require('../models');
 const FollowRequest = require('../models/followerRequest');
+const { User } = require('../models');
 const router = express.Router();
 
 // routes/followRequest.js
@@ -31,6 +32,34 @@ router.post('/toggleFollowRequest/:userId', async (req, res) => {
     }
 });
 
+router.get('/getFollowRequests/:userId', async (req, res) => {
+    const { userId } = req.params;
 
+    try {
+        // Tìm tất cả các lời mời kết bạn mà userId là người nhận
+        const followRequests = await FollowRequest.findAll({
+            where: { receiverId: userId },
+            include: [
+                {
+                    model: User,
+                    as: 'sender',
+                },
+                {
+                    model: User,
+                    as: 'receiver',
+                }
+            ]
+        });
+
+        if (!followRequests.length) {
+            return res.json({ success: false, message: 'No follow requests found for this user' });
+        }
+
+        res.json({ success: true, data: followRequests });
+    } catch (error) {
+        console.error('Error fetching follow requests:', error);
+        res.status(500).json({ success: false, error: 'Error fetching follow requests' });
+    }
+});
 
 module.exports = router;

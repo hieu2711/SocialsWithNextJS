@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 // Lấy tất cả người dùng
 router.get('/getAll', async (req, res) => {
@@ -133,6 +134,33 @@ router.get('/get/count', async (req, res) => {
     try {
         const userCount = await User.count();
         res.status(200).send({ userCount });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+router.get('/search', async (req, res) => {
+    try {
+        const { name } = req.query; // Lấy chuỗi tìm kiếm từ query parameters
+        console.log("aloaloa" + req.query)
+        if (!name || typeof name !== 'string') {
+            return res.status(400).json({ success: false, message: 'Please provide a name to search' });
+        }
+
+        // Tìm kiếm người dùng có tên gần giống với chuỗi đã nhập
+        const users = await User.findAll({
+            where: {
+                name: {
+                    [Op.like]: `%${name}%` // Tìm kiếm tên có chứa chuỗi ký tự name
+                }
+            }
+        });
+
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: 'No users found' });
+        }
+
+        res.status(200).send(users);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

@@ -26,7 +26,7 @@ router.post('/switchFollow/:userId', async (req, res) => {
         }
     } catch (error) {
         console.error('Error switching follow:', error);
-        res.status(500).json({ success: false, error: 'Error switching follow' });
+        res.status(500).json({ success: false, error: 'Error switching follow', error });
     }
 });
 

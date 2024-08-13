@@ -1,4 +1,3 @@
-// models/User.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./db');
 
@@ -11,11 +10,11 @@ const User = sequelize.define('User', {
   phone: {
     type: DataTypes.STRING,
     unique: true,
-    require:true,
+    allowNull: false,
   },
-  password:{
+  password: {
     type: DataTypes.STRING,
-    require:true
+    allowNull: false,
   },
   avatar: {
     type: DataTypes.STRING,

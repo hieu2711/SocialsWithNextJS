@@ -6,9 +6,16 @@ export const endpoints = {
     login: `${SERVER}/api/users/login`,
     updateUser:  (userId: number) => `${SERVER}/api/users/update/${userId}`,
     deleteUser:(userId: number)  => `${SERVER}/api/users/delete/${userId}`,
+    getUserByID:  (userId: number) => `${SERVER}/api/users/getUserById/${userId}`,
     toggleFollowRequest: (userId: number) => `${SERVER}/api/followRequests/toggleFollowRequest/${userId}`,
     switchFollow: (userId: number) => `${SERVER}/api/followers/switchFollow/${userId}`,
     toggleBlock: (userId: number) => `${SERVER}/api/blocks/toggleBlock/${userId}`,
+    getFollowRequests: (userId: number) => `${SERVER}/api/followRequests/getFollowRequests/${userId}`,
+    acceptFriendRequest: `${SERVER}/api/friend/acceptFriendRequest`,
+    rejectFriendRequest: `${SERVER}/api/friend/rejectFriendRequest`,
+    removeFriend: `${SERVER}/api/friend/removeFriend`,
+    getListFriends: (userId: number) => `${SERVER}/api/friend/getFriends/${userId}`,
+    checkFriendship: `${SERVER}/api/friend/checkFriendship`,
     getAllStory: `${SERVER}/api/stories/getAll`,
     createStory: `${SERVER}/api/stories/create`,
     deleteStory:(storyId: number) => `${SERVER}/api/stories/delete/${storyId}`,
@@ -16,6 +23,7 @@ export const endpoints = {
     createPost: `${SERVER}/api/posts/create`,
     deletePost:(postId: number) => `${SERVER}/api/posts/delete/${postId}`,
     updatePost: (postId: number) => `${SERVER}/api/posts/update/${postId}`,
+    getPostByUserId: (userId: number) => `${SERVER}/api/posts/posts-and-user/${userId}`,
     toggleLike: `${SERVER}/api/posts/toggleLike`,
     toggleLikeComment: `${SERVER}/api/posts/toggleLikeComment`,
     checkUserLike: (userId: number, postId: number) => `${SERVER}/api/posts/check?userId=${userId}&postId=${postId}`,
@@ -29,6 +37,12 @@ export const endpoints = {
     createComment: `${SERVER}/api/comments/create`,
     deleteComment:(commentId: number) => `${SERVER}/api/comments/delete/${commentId}`,
     updateComment: (commentId: number) => `${SERVER}/api/comments/update/${commentId}`,
+    createImage: `${SERVER}/api/image/create`,
+    getAllImages: (userId: number, limit?: number) => {
+        const url = limit ? `${SERVER}/api/images/getAll/${userId}?limit=${limit}` : `${SERVER}/api/images/getAll/${userId}`;
+        return url;
+    },
+    search: (name: string) => `${SERVER}/api/users/search?name=${name}`,
 };
 
 export const authApi = () => {

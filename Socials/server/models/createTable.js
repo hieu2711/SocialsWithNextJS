@@ -1,23 +1,17 @@
-// createTables.js
 const sequelize = require('./db');
-const User = require('./user');
-const Post = require('./post');
-const Comment = require('./comment');
-const Like = require('./like');
-const Follower = require('./follower');
-const FollowRequest = require('./followerRequest');
-const Block = require('./block');
-const Story = require('./story');
+const Friend = require('./friend');
+const Image = require('./image'); // Import mô hình Image
 require('dotenv').config();
-console.log('Database:', process.env.DATABASENAME);
-console.log('User:', process.env.USER);
-const createTables = async () => {
+
+
+const createImageTable = async () => {
   try {
     await sequelize.authenticate();
     console.log('Database connection established successfully.');
 
-    await sequelize.sync({ force: true });
-    console.log('All tables have been created successfully.');
+    // Chỉ đồng bộ hóa bảng Image
+    await Friend.sync({ force: true });
+    console.log('Image table has been created successfully.');
   } catch (error) {
     console.error('Unable to connect to the database:', error);
   } finally {
@@ -25,4 +19,4 @@ const createTables = async () => {
   }
 };
 
-createTables();
+createImageTable();

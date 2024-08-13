@@ -12,6 +12,8 @@ const postRoutes = require('./routes/post');
 const storyRoutes = require('./routes/story');
 const commentRoutes = require('./routes/comment');
 const sharedRoutes = require('./routes/shared');
+const imageRoutes = require('./routes/image');
+const friendRoutes = require('./routes/friend');
 const errorHandler = require('./helpers/error-handler');
 const bodyParser = require('body-parser');
 require('dotenv/config');
@@ -43,6 +45,8 @@ app.use('/api/posts', postRoutes);
 app.use('/api/stories', storyRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/shared', sharedRoutes);
+app.use('/api/images', imageRoutes);
+app.use('/api/friend', friendRoutes);
 
 // Server setup
 const PORT = process.env.PORT || 3001;

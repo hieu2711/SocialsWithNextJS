@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ListPost from './ListPost';
 import { useGlobalContext } from '../app/globalContext';
 import { Comment, Post } from '../config/interface';
 
-const Feed = () => {
-    const { post, comment,setPost, avatar, id, name } = useGlobalContext();
-    if (!Array.isArray(post)) {
+const Feed = ({ listPost }) => {
+    const { post, comment, setPost, avatar, id, name } = useGlobalContext();
+    
+    const postsToDisplay = listPost || post;
+    
+    if (!Array.isArray(postsToDisplay)) {
         return <div>No posts available</div>;
     }
 
@@ -14,43 +17,41 @@ const Feed = () => {
     };
 
     const getMediaType = (url) => {
-        if(url)
-        {
-        const extension = url.split('.').pop().toLowerCase();
-        const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-        const videoExtensions = ['mp4', 'webm', 'ogg'];
-        
-        if (imageExtensions.includes(extension)) {
+        if (url) {
+            const extension = url.split('.').pop().toLowerCase();
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            const videoExtensions = ['mp4', 'webm', 'ogg'];
+            
+            if (imageExtensions.includes(extension)) {
+                return 'image';
+            }
+            
+            if (videoExtensions.includes(extension)) {
+                return 'video';
+            }
+            
             return 'image';
         }
-        
-        if (videoExtensions.includes(extension)) {
-            return 'video';
-        }
-        
-        return 'image';
-        }
     };
+
     return (
         <div className="flex flex-col gap-5">
-            {
-                post.map((postItem) => (
-                    <ListPost
-                        key={postItem.id}
-                        commentList={comment.filter(comment => comment.postId === postItem.id)}
-                        postId={postItem.id}
-                        name={postItem.User.name}
-                        avt={postItem.User.avatar}
-                        image={postItem.img}
-                        desc={postItem.desc}
-                        avatarUser={avatar || ''}
-                        userId={id || 0}
-                        idUserPost={postItem.userId}
-                        onHidePost={handleHidePost}
-                        mediaType={getMediaType(postItem.img)}
-                    />
-                ))
-            }
+            {postsToDisplay.map((postItem) => (
+                <ListPost
+                    key={postItem.id}
+                    commentList={comment.filter(comment => comment.postId === postItem.id)}
+                    postId={postItem.postId ? postItem.postId :  postItem.id}
+                    name={postItem.User.name}
+                    avt={postItem.User.avatar}
+                    image={postItem.img }
+                    desc={postItem.desc}
+                    avatarUser={avatar || ''}
+                    userId={id || 0}
+                    idUserPost={postItem.userId}
+                    onHidePost={handleHidePost}
+                    mediaType={getMediaType(postItem.img)}
+                />
+            ))}
         </div>
     );
 };

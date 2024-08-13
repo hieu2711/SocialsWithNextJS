@@ -15,6 +15,7 @@ export const GlobalProvider = ({ children }) => {
     const [like, setLike] = useState(0);
     const [cmt, setCmt] = useState(0);
     const [shared, setShared] = useState(0);
+   
 
     const fetchApiStory = async () => {
         try {
@@ -46,6 +47,7 @@ export const GlobalProvider = ({ children }) => {
         fetchApiStory();
         fetchCounts(postId, id);
     }
+
     useEffect(() => {
         const getAvt = localStorage.getItem('avt');
         const getID = localStorage.getItem('id');
@@ -55,6 +57,10 @@ export const GlobalProvider = ({ children }) => {
         setName(getName || '');
         fetchApiStory();
     }, []);
+
+    
+
+   
 
     const fetchCounts = async (postId: number, userId: number) => {
         try {
@@ -97,7 +103,7 @@ export const GlobalProvider = ({ children }) => {
                 shared,
                 setShared,
                 reloadPage,
-                fetchCounts
+                fetchCounts,
             }}
         >
             {children}

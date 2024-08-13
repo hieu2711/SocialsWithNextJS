@@ -12,7 +12,6 @@ type Props = {
 const LeftMenu = ({type}: Props) => {
   return (
     <div className="flex flex-col gap-6">
-      {type === "profile" && <ProfileCard />}
       <div className="p-4 bg-white rounded-lg shadow-md text-sm text-gray-500 flex flex-col gap-2">
         <Link
           href="/"
